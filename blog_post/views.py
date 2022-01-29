@@ -1,3 +1,4 @@
+from ast import Delete
 from http.client import REQUESTED_RANGE_NOT_SATISFIABLE
 from urllib.request import Request
 from django.shortcuts import render,redirect
@@ -68,6 +69,24 @@ def register(request):
 def post(request, pk):
     posts = Post.objects.get(id=pk)
     return render(request, 'posts.html', {'posts': posts})
+
+
+def user_profile(request, username):
+    user = User.objects.get(username=username)
+    return render(request, '/user_profile.html', {"user":user})
+
+def del_user(request,username):
+
+    try:
+        u = User.objects.get(username = username)
+        u.delete()
+    except User.DoesNotExist:
+
+        messages.info(request,'User Doesnt Exists')
+        return redirect('login')
+
+     
+
 
 
 
