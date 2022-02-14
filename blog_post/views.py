@@ -1,11 +1,12 @@
 from ast import Delete
 from http.client import REQUESTED_RANGE_NOT_SATISFIABLE
+from turtle import title
 from urllib.request import Request
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User , auth
 from  django.contrib import messages
 from .models import Post
-
+from datetime import datetime
 
 # Create your views here.
 
@@ -71,9 +72,10 @@ def post(request, pk):
     return render(request, 'posts.html', {'posts': posts})
 
 
-def user_profile(request, username):
-    user = User.objects.get(username=username)
-    return render(request, '/user_profile.html', {"user":user})
+def user_profile(request):
+    user = User.objects.all()
+    username = request.POST['username']
+    return render(request, '/user_profile.html', {"user":user},{"username":username})
 
 def del_user(request,username):
 
@@ -85,6 +87,29 @@ def del_user(request,username):
         messages.info(request,'User Doesnt Exists')
         return redirect('login')
 
+
+def upload(request):
+    if request.method == 'GET':
+        return render(request, 'Upload.html',)
+    elif request.method == 'POST':
+        Post.author = request.user
+        title = request.POST['title']       
+        body = request.POST['body']
+        post = Post.object.create(title=title,body=body)
+        post.save()
+
+
+        # user = User.objects.all()
+
+        # if request.user.is_authenticated():
+        #     post = Post.objects.create(title=request.POST['title'],body=request.POST['body'],author=user, created_at=datetime.utcnow(),)
+        #     messages.info(request,'Post uploaded')
+        #     return render(request, 'Uplaod.html',)
+
+
+
+
+    return render(request,"upload.html")
      
 
 

@@ -1,0 +1,28 @@
+
+
+{% load static %}
+
+<link rel="stylesheet" href=" {% static 'style.css' %}">
+
+<div class="login">
+	<h1>Upload Post</h1>
+    <style>
+        h5{
+            color: red;
+        }
+    </style>
+
+    {% for message in messages %}
+    <h5>{{message}}</h5>
+    {% endfor %}
+    <form method="POST" action="register">
+        {% csrf_token %}
+    	<input type="text" name="title" size="50" placeholder="Enter title" required="required"  />
+      <input type="text" name="body" placeholder="Enter Body" required="required" />
+      <!-- <input type="text" name="username" placeholder="Enter Username" required="required" />
+      <input type="text" name="email" placeholder="Enter email" required="required" />
+         -->
+
+        <button type="submit" class="btn btn-primary btn-block btn-large">Upload</button>
+    </form>
+</div>
